@@ -1,0 +1,1 @@
+self.addFiler(r'\*(.+?)\*','emphasi')
