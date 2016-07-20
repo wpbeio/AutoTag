@@ -1,7 +1,6 @@
 # coding=utf-8
 import sys
 import re
-import pdb
 from handlers import *
 from utils import *
 from rules import *
@@ -57,6 +56,6 @@ class BasicTextParser(Parser):
         self.addFilter(r'([\.a-zA-Z]+@[\.a-zA-Z]+[a-zA-Z]+)', 'mail')
 
 
-handler = HTMLRenderer()
-parser = BasicTextParser(handler)
+text = HTMLRenderer()
+parser = BasicTextParser(text)
 parser.parse(sys.stdin)
