@@ -8,7 +8,7 @@ class Rule:
     """规则模块"""
 
     def action(self, block, handler):
-        handler.start(self, type)
+        handler.start(self.type)
         handler.feed(block)
         handler.end(self.type)
         return True
@@ -60,7 +60,7 @@ class ListRule(ListItemRule):
             handler.start(self.type)
             self.inside = True
         elif self.inside and not ListItemRule.condition(self, block):
-            handler.end(self, type)
+            handler.end(self.type)
             self.inside = False
         return False
 

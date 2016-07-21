@@ -1,32 +1,34 @@
-class TestClassMethod(object):
+# coding=utf-8
 
-    METHOD = "method hoho"
+import re
 
-    def __init__(self):
-        self.name = "leon"
 
-    def test1(self):
-        print("test1")
-        print(self.name)
+def lines(file):
+    for line in file:  # 遍历文档的每一个字符
+        yield line
+        # print(line)
 
-    @classmethod
-    def test2(cls):
-        print("test2")
-        print(cls)
+    yield '\n'  # 遍历完整个文档以后返回一个换行
 
-        print(TestClassMethod.METHOD)
-        print('----------------')
 
-    @staticmethod
-    def test3():
-        print("test3")
-        print(TestClassMethod.METHOD)
-        print('----------------')
+def blocks(file):
+    block = []
+    for line in lines(file):  # 循环迭代器，取得文档的每一个块
+        if line.strip():  # 如果个字符不为空，加入到这个block，为空就是一个单词结束
+            block.append(line)
+        elif block:  # 否则就返回这个block ，返回以后重置block
+            yield ''.join(block).strip()
+            # print(block)
+            # print('\n')
+            block = []
 
+
+def addFilter(self, patten, name):
+    def filter(block, handler):
+        return re.sub(patten, handler.sub(name), block)
+    self.filters.append(filter)
 
 if __name__ == '__main__':
-    a = TestClassMethod()
-    a.test1()
-    a.test2()
-    a.test3()
-    TestClassMethod().test3()
+    with open('testtxt.txt', 'r') as f:
+        for x in blocks(f.read()):
+            pass
