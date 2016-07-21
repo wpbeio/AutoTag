@@ -15,6 +15,7 @@ class Handler:
 
     def sub(self, name):
         def substitution(match):
+            # 寻找sub函数，如果没有对应函数，返回原字符串
             result = self.callback('sub_', name, match)
             if result is None:
                 match.group(0)
