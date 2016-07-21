@@ -26,15 +26,18 @@ class Parser():
         self.filters.append(filter)
 
 # 分析传入文件的方法
+
     def parse(self, file):
         self.handler.start('document')  # 传入文件第一步加入HTML文件的标头
-        # 分割块
+        # 分割块，对每个块进行替换和规则应用
         for block in blocks(file):
-            for filter in self.filters:  # 初始化BasicTextParser的时候就已经将所有的规则和正则加入
+                # 初始化BasicTextParser的时候就已经将所有的规则和正则加入
+            for filter in self.filters:
+                # 使用re删选器将符合条件的块中字符串替换，替换以后返回替换后的字符串
                 block = filter(block, self.handler)
             for rule in self.rules:
                 if rule.condition(block):
-                    last = rule.action(block, self.handler)
+                    last = rule.action(block, self.handler)  # 对符合规则的块执行加入标签功能
                     if last:
                         break
         self.handler.end('document')
@@ -45,8 +48,8 @@ class BasicTextParser(Parser):
 
     def __init__(self, handler):
         # 识点子类初始化函数，需要调用父类初始化，下面也可以使用super调用，super调用可以解决砖石继承的问题（多继承）
-        # Parser.__init__(self, handler)
-        super(BasicTextParser, self).__init__()
+        Parser.__init__(self, handler)
+        # super(BasicTextParser, self).__init__(self, handler)
         self.addRule(ListRule())
         self.addRule(ListItemRule())
         self.addRule(TitleRule())
